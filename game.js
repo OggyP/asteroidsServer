@@ -37,6 +37,7 @@ class Game {
         this.playersWs = players
         this.players = []
         this.asteroids = []
+        this.bullets = []
         this.startTime = new Date()
         this.interval = setInterval(() => this.tick(), 50)
         for (let i = 0; i < this.playersWs.length; i++) {
@@ -75,15 +76,30 @@ class Game {
                 playerNum = i
         if (playerNum === null) throw new Error("Player " + id + " is not in this game.")
         this.players[playerNum] = data.players
-        if (playerNum === 0)
+        if (playerNum === 0) {
             this.asteroids = data.asteroids
+            this.bullets = data.bullets
+        }
+    }
+
+    fire(data, id) {
+        let playerNum = null
+        for (let i = 0; i < this.playersWs.length; i++)
+            if (this.playersWs[i].id === id)
+                playerNum = i
+        if (playerNum === null) throw new Error("Player " + id + " is not in this game.")
+        this.bullets.push(data)
+        if (playerNum !== 0) {
+            sendToWs(this.playersWs[0].ws, 'fire', data)
+        }
     }
 
     tick() {
         for (let i = 0; i < this.playersWs.length; i++) {
             sendToWs(this.playersWs[i].ws, 'gameInfo', {
                 players: this.players,
-                asteroids: this.asteroids
+                asteroids: this.asteroids,
+                bullets: this.bullets
             })
         }
     }

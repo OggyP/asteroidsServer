@@ -33,11 +33,17 @@ wss.on('connection', function connection(ws, request, gameMode) {
         try {
             const msg = JSON.parse(data)
 
+            const game = games[gameId]
+            if (!game) throw new Error("Mr Not Cheating")
+
             switch (msg.type) {
+
                 case ('gameInfo'):
-                    const game = games[gameId]
-                    if (!game) throw new Error("Mr Not Cheating")
                     game.info(msg.data, id)
+                    break;
+                case ('fire'):
+                    game.fire(msg.data, id)
+                    break;
             }
 
         } catch (e) {
