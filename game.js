@@ -22,7 +22,7 @@ const playerNumInfo = [{
         }
     },
     {
-        colour: "#8401d9", //green
+        colour: "#8401d9", //purple
         position: {
             x: 1.2,
             y: 0.5
@@ -54,7 +54,8 @@ class Game {
                 movementVector: {
                     x: 0,
                     y: 0
-                }
+                },
+                alive: true
             })
         }
         for (let i = 0; i < this.playersWs.length; i++) {
