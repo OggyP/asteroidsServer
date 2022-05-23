@@ -95,13 +95,16 @@ class Game {
     }
 
     tick() {
+        let playerAlive = false
         for (let i = 0; i < this.playersWs.length; i++) {
+            if (this.players.alive) playerAlive = true
             sendToWs(this.playersWs[i].ws, 'gameInfo', {
                 players: this.players,
                 asteroids: this.asteroids,
                 bullets: this.bullets
             })
         }
+        if (!playerAlive) clearTimeout(this.interval)
     }
 }
 
